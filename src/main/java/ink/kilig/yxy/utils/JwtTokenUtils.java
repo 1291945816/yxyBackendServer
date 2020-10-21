@@ -31,7 +31,7 @@ public class JwtTokenUtils implements Serializable {
                          @Value("${jwt.token-validity-in-seconds}") Long expiration_time,
                          @Value(("${jwt.header}")) String header) {
         this.base64_secret = base64_secret;
-        this.expiration_time = expiration_time;
+        this.expiration_time = expiration_time*1000;
         this.header = header;
     }
     //用于生成token

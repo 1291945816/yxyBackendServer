@@ -6,7 +6,7 @@ package ink.kilig.yxy.domain;
  * @description:
  */
 public enum ResponseCode {
-    SuccessResult("200"),FailureResult("400");
+    SuccessResult("200"),FailureResult("500");
 
     private String code;
 

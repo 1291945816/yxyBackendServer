@@ -23,9 +23,9 @@ public class IntercepterConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(corsInterceptor).addPathPatterns("/**");
-        //排除掉验证码以及注册和登陆，其他都要拦截
-        registry.addInterceptor(interceptor).addPathPatterns("/**").excludePathPatterns("/yxyUser/register/**")
-                .excludePathPatterns("/captcha/**")
-                .excludePathPatterns("/yxyUser/login/**");
+//        //排除掉验证码以及注册和登陆，其他都要拦截
+//        registry.addInterceptor(interceptor).addPathPatterns("/**").excludePathPatterns("/yxyUser/register/**")
+//                .excludePathPatterns("/captcha/**")
+//                .excludePathPatterns("/yxyUser/login/**");
     }
 }
