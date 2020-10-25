@@ -188,6 +188,15 @@ public class YxyUserController {
         String username = jwtTokenUtils.getUsernameFromToken(token);
         return Result.success(yxyUserService.getUserInfo(username),"获取用户信息成功!");
     }
+    /**
+     * 用于刷新登录的Token
+     */
+    @GetMapping("refreshToken")
+    public Result<String> getlatestToken(HttpServletRequest request){
+        String token=request.getHeader("token");
+        token = jwtTokenUtils.refreshToken(token);
+        return Result.success(token,"刷新成功");
+    }
 
 
 

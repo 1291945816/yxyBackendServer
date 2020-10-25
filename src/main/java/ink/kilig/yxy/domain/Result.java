@@ -26,6 +26,13 @@ public class Result<T> {
         result.setData(null);
         return result;
     }
+    public static <T> Result<T> success(String message){
+        Result<T> result=new Result<>();
+        result.setCode(ResponseCode.SuccessResult.getCode());
+        result.setMessage(message);
+        result.setData(null);
+        return result;
+    }
 
     public void setCode(String code) {
         this.code = code;
