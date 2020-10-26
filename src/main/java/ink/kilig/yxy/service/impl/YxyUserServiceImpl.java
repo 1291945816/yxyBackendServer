@@ -64,8 +64,9 @@ public class YxyUserServiceImpl implements YxyUserService {
     public boolean uploadAvatar(MultipartFile avatar, YxyUser yxyUser) {
         String filePath = (new StringBuffer(this.fileRootPath))
                 .append(yxyUser.getYxyUserName())
-                .append(Objects.requireNonNull(avatar.getOriginalFilename())
-                .substring(avatar.getOriginalFilename().lastIndexOf('.')))
+                .append(
+                        Objects.requireNonNull(
+                                avatar.getOriginalFilename()).substring(avatar.getOriginalFilename().lastIndexOf('.')))
                 .toString();
 
         File file = new File(filePath);
