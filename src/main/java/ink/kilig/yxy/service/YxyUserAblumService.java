@@ -13,5 +13,6 @@ import java.util.Map;
  */
 public interface YxyUserAblumService {
     Result<String> insertAblum(Map<String,String> map, HttpServletRequest request);
-    Result<String> deleteAblum(Map<String,String> map,HttpServletRequest request);
+    Result<String> deleteAblum(Map<String,String> map);
+    Result<String> changeAblumName(Map<String,String> map);
 }

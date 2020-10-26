@@ -9,4 +9,31 @@ jwt:
 file:
   avatar: //yxyUser//
   sharePicture: //sharePicture//
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://123.56.2.196:3306/yxyBackenddb?useAffectedRows=true&useUnicode=true&characterEncoding=utf-8&useSSL=false&&serverTimezone=Asia/Shanghai
+    username:
+    password: 
+    druid:
+      initial-size: 5 #初始化连接的个数
+      max-active: 20 #最大活跃个数
+      min-idle: 5 #最小的连接池数量
+      max-wait: 3000 #获取连接时的最大等待时间
+      pool-prepared-statements: false
+      max-open-prepared-statements: -1
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 30000
+      max-evictable-idle-time-millis: 40000
+      filters: stat,wall
+      aop-patterns: package ink.kilig.yxy.service.*
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: false
+        login-password: root
+        login-username: root
+        allow: 127.0.0.1
+
+
   

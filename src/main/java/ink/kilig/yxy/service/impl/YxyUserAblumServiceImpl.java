@@ -47,11 +47,32 @@ public class YxyUserAblumServiceImpl implements YxyUserAblumService {
     }
 
     @Override
-    public Result<String> deleteAblum(Map<String, String> map, HttpServletRequest request) {
+    public Result<String> deleteAblum(Map<String, String> map) {
 
+        //获取相册名称
+        String ablumId = map.get("ablumId");
+        if (ablumId != null && !ablumId.equals("")){
+            boolean isDelete = yxyUserAblumMapper.deleteAblum(ablumId);
+            if (isDelete)
+                return Result.success("删除相册成功!");
+            else
+                return Result.falure("相册不存在，删除失败!");
+        }
+        return Result.falure("由于未知的原因，删除相册失败!");
+    }
 
-
-
-        return null;
+    @Override
+    public Result<String> changeAblumName(Map<String, String> map) {
+        //获取相册名称
+        String ablumId = map.get("ablumId");
+        String newAblbumName=map.get("newAblumName");
+        if (ablumId != null && !ablumId.equals("") && newAblbumName != null && !newAblbumName.equals("")){
+            boolean isChange = yxyUserAblumMapper.changeAblum(newAblbumName, ablumId);
+            if (isChange)
+                return Result.success("修改相册名称成功!");
+            else
+                return Result.falure("相册不存在，修改失败!");
+        }
+        return Result.falure("由于未知的原因，修改相册名称失败!");
     }
 }

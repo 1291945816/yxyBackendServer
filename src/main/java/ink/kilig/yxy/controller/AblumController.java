@@ -38,18 +38,24 @@ public class AblumController {
 
     /**
      * 删除相册（连同相册里面的图片
-     * @param ablumInfo
-     * @param request
+     * @param ablumInfo 相册相关信息的键值对集合
      * @return
      */
     @PostMapping("/delete")
-    public Result<String> delete(@RequestBody Map<String,String> ablumInfo, HttpServletRequest request){
-        return yxyUserAblumService.deleteAblum(ablumInfo,request);
+    public Result<String> delete(@RequestBody Map<String,String> ablumInfo){
+        return yxyUserAblumService.deleteAblum(ablumInfo);
     }
+
+    /**
+     * 修改相册名称
+     * @return
+     */
     @PostMapping("/change")
-    public Result<String> change(){
-        return null;
+    public Result<String> change(@RequestBody Map<String,String> ablumInfo){
+        return yxyUserAblumService.changeAblumName(ablumInfo);
     }
+
+
     @GetMapping("/info")
     public Result<List<Ablum>> info(){
         return null;
