@@ -1,5 +1,6 @@
 package ink.kilig.yxy.service.impl;
 
+import ink.kilig.yxy.domain.PictureVO;
 import ink.kilig.yxy.domain.UploadPictureInfo;
 import ink.kilig.yxy.domain.Result;
 import ink.kilig.yxy.mapper.YxyPictureMapper;
@@ -19,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * @author: Hps
@@ -27,6 +29,7 @@ import java.util.Calendar;
  */
 @Service
 public class YxyPictureServiceImpl implements YxyPictureService {
+    private final String PATH="/picture?pictureId=";
     private YxyPictureMapper yxyPictureMapper;
     private JwtTokenUtils jwtTokenUtils;
     private String fileRootPath;
@@ -95,5 +98,14 @@ public class YxyPictureServiceImpl implements YxyPictureService {
             }
         }
         return bytes;
+    }
+
+    @Override
+    public Result<List<PictureVO>> getPublishPicture(String username,Long pageNum,Long size) {
+        List<PictureInfoPO> pictures = yxyPictureMapper.getPulishPicture(pageNum, size);
+        logger.info(pictures.toString());
+
+
+        return null;
     }
 }

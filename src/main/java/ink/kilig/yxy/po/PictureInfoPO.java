@@ -18,6 +18,24 @@ public class PictureInfoPO {
     private String pictureInfo;
     private long ablumId;
     private int downloadSum;
+    private String yxyNickName;
+    private String yxyUserName;
+
+    public String getYxyNickName() {
+        return yxyNickName;
+    }
+
+    public void setYxyNickName(String yxyNickName) {
+        this.yxyNickName = yxyNickName;
+    }
+
+    public String getYxyUserName() {
+        return yxyUserName;
+    }
+
+    public void setYxyUserName(String yxyUserName) {
+        this.yxyUserName = yxyUserName;
+    }
 
     @Override
     public String toString() {
