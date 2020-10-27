@@ -4,6 +4,7 @@ import ink.kilig.yxy.po.PictureInfoPO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -21,7 +22,7 @@ public interface YxyPictureMapper {
             ",pictureInfo,ablumId) values(#{pictureName},#{pictureCreateTime},#{picturePath},#{publishVisiable},#{pictureInfo},#{ablumId})")
     boolean upload(PictureInfoPO pictureInfoPO);
 
-    @Select("select picturePath from yxyPicture where pictureId=#{pictureId} ")
+    @Select("select picturePath from yxyPicture where pictureId=#{pictureId} limit 1")
     String getPicturePath(Long pictureId);
 
     @Select("SELECT\n" +
@@ -48,5 +49,19 @@ public interface YxyPictureMapper {
 
     @Select("select pictureId from yxyUserStar where yxyUserName=#{username} and isStar=1")
     List<String> getStaredPictureByusername(String username);
+
+    @Select("select isStar from yxyUserStar where yxyUserName=#{username} and pictureId=#{pictureId} limit 1")
+    boolean isPictureExist(String username,String pictureId);
+
+    @Update("UPDATE yxyUserStar SET yxyUserStar.isStar=0 WHERE pictureId=#{pictureId} AND yxyUserName=#{username} ")
+    void updatStar(String username,String pictureId);
+
+    @Update("UPDATE yxyPicture SET yxyPicture.starNum=#{starNum} WHERE yxyPicture.pictureId=#{pictureId}")
+    void updateStarNum(String starNum,String pictureIs);
+
+    @Insert("insert into yxyUserStar(yxyUserName,pictureId,isStar) values(#{yxyUserName},#{pictureId},1)")
+    void insertStar(String yxyUserName,String pictureId);
+
+
 
 }

@@ -12,7 +12,7 @@ public class YxyApplicationTests {
 
     @Test
     public void testMethod(){
-        System.out.println(DigestUtils.sha256Hex("123456"));
+        System.out.println(DigestUtils.sha256Hex("1"));
     }
 
 

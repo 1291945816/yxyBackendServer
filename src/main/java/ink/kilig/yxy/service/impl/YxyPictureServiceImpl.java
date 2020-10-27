@@ -15,12 +15,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.BindException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: Hps
@@ -102,10 +106,47 @@ public class YxyPictureServiceImpl implements YxyPictureService {
 
     @Override
     public Result<List<PictureVO>> getPublishPicture(String username,Long pageNum,Long size) {
-        List<PictureInfoPO> pictures = yxyPictureMapper.getPulishPicture(pageNum, size);
+        List<PictureInfoPO> pictures = yxyPictureMapper.getPulishPicture(pageNum, size); //获取到照片集合
+        List<String> staredPicture = yxyPictureMapper.getStaredPictureByusername(username); //用户的点赞集合
         logger.info(pictures.toString());
+        logger.info(staredPicture.toString());
+        List<PictureVO> result=new ArrayList<>();
+
+        for (PictureInfoPO pictureInfoPO:pictures){
+            PictureVO pictureVO=new PictureVO();
+            pictureVO.setImgID(String.valueOf(pictureInfoPO.getPictureId())); //设置图片id
+            if (staredPicture.size() != 0 && staredPicture.contains(String.valueOf(pictureInfoPO.getPictureId()))){
+
+                pictureVO.setStared(true);
+            }
+            pictureVO.setAuthorId(pictureInfoPO.getYxyUserName());
+            pictureVO.setAuthorName(pictureInfoPO.getYxyNickName());
+            pictureVO.setDisplayImgName(pictureInfoPO.getPictureName());
+            pictureVO.setDownloadNum(pictureInfoPO.getDownloadSum());
+            pictureVO.setStarNum(pictureInfoPO.getStarNum());
+            pictureVO.setDisplayImgUrl(this.PATH+pictureVO.getImgID());
+            result.add(pictureVO);
+        }
+        return Result.success(result,"获取成功");
+    }
+
+    @Override
+    public Result<String> star(Map<String, String> map, HttpServletRequest request) {
+//        String token=request.getHeader("token");
+//        String username = jwtTokenUtils.getUsernameFromToken(token);
+        String pictureId = map.get("pictureId");
+        if(pictureId == null || pictureId.equals("")) return Result.falure("抱歉，图片Id不可以为空");
+        try {
+            yxyPictureMapper.isPictureExist("1800300916", pictureId);
+        }catch (Exception bindException){
+            //这里是抛空异常的时候
+            yxyPictureMapper.insertStar("1800300916",pictureId);
 
 
+
+        }
+
+        //logger.info(String.valueOf(pictureExist));
         return null;
     }
 }

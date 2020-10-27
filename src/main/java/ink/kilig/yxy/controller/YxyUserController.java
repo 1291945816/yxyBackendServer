@@ -66,7 +66,7 @@ public class YxyUserController {
             yxyUser.setYxyUserName(username);
             try {
                 if (yxyUserService.YxyuserRegister(yxyUser)){
-                    return Result.success(null,"用户注册成功，欢迎您加入伊享云大家庭。");
+                    return Result.success(null,"用户注册成功，欢迎您加入伊享云。");
                 }
                 //校验用户名
             } catch (DuplicateKeyException de) {

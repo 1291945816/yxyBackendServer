@@ -62,13 +62,31 @@ public class PictureController {
      */
     @GetMapping("/pictures")
     public Result<List<PictureVO>> getPictures(@RequestBody Map<String,String> map,HttpServletRequest request){
-//        String token=request.getHeader("token");
-//        String username = jwtTokenUtils.getUsernameFromToken(token);
+        String token=request.getHeader("token");
+        String username = jwtTokenUtils.getUsernameFromToken(token);
         String pageNum = map.get("pageNum");
         String size = map.get("size");
         if(pageNum == null || pageNum.equals("") || !pageNum.matches("^[0-9]*$") || size == null
         ||size.equals("") || !size.matches("^[0-9]*$")) return Result.falure("抱歉，你的输入格式不对，请重试!");
-        return yxyPictureService.getPublishPicture("1800300916",Long.valueOf(pageNum),Long.valueOf(size));
+        return yxyPictureService.getPublishPicture(username,Long.valueOf(pageNum),Long.valueOf(size));
     }
+
+    /**
+     * 获取评论
+     */
+
+
+    /**
+     * 添加评论
+     */
+
+    /*
+     *点赞
+     */
+    @PostMapping("star")
+    public Result<String> star(@RequestBody Map<String,String> map,HttpServletRequest request){
+        return yxyPictureService.star(map,request);
+    }
+
 
 }

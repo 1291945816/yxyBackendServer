@@ -13,9 +13,9 @@ public class PictureVO  {
     private String authorName; //作者名称
     private String authorId;//作者ID
    // private String authorProfileImgUrl; //图片作者信息
-    private boolean isStared; //是否点赞
+    private boolean isStared=false; //是否点赞
     private int downloadNum; //下载数量
-    private String ImgDetailUrl;//图片详情链接  返回相关的信息
+
 
     public String getImgID() {
         return imgID;
@@ -65,14 +65,6 @@ public class PictureVO  {
         this.authorId = authorId;
     }
 
-//    public String getAuthorProfileImgUrl() {
-//        return authorProfileImgUrl;
-//    }
-//
-//    public void setAuthorProfileImgUrl(String authorProfileImgUrl) {
-//        this.authorProfileImgUrl = authorProfileImgUrl;
-//    }
-
     public boolean isStared() {
         return isStared;
     }
@@ -89,11 +81,4 @@ public class PictureVO  {
         this.downloadNum = downloadNum;
     }
 
-    public String getImgDetailUrl() {
-        return ImgDetailUrl;
-    }
-
-    public void setImgDetailUrl(String imgDetailUrl) {
-        ImgDetailUrl = imgDetailUrl;
-    }
 }
