@@ -1,8 +1,6 @@
 package ink.kilig.yxy.controller;
 
-import ink.kilig.yxy.domain.PictureVO;
-import ink.kilig.yxy.domain.UploadPictureInfo;
-import ink.kilig.yxy.domain.Result;
+import ink.kilig.yxy.domain.*;
 import ink.kilig.yxy.service.YxyPictureService;
 import ink.kilig.yxy.utils.JwtTokenUtils;
 import org.apache.juli.logging.LogFactory;
@@ -58,10 +56,20 @@ public class PictureController {
     }
 
     /**
+     * 返回缩略图
+     */
+    @GetMapping(value = "/thumbnail",produces = {MediaType.IMAGE_JPEG_VALUE,MediaType.IMAGE_PNG_VALUE})
+    public byte[] getThumbnail(@RequestParam Long pictureId){
+        return yxyPictureService.getThumbnailByid(pictureId);
+    }
+
+
+
+    /**
      * 返回图片详情集合
      */
     @GetMapping("/pictures")
-    public Result<List<PictureVO>> getPictures(@RequestBody Map<String,String> map,HttpServletRequest request){
+    public Result<List<PictureVO>> getPictures(@RequestParam Map<String,String> map,HttpServletRequest request){
         String token=request.getHeader("token");
         String username = jwtTokenUtils.getUsernameFromToken(token);
         String pageNum = map.get("pageNum");
@@ -74,18 +82,45 @@ public class PictureController {
     /**
      * 获取评论
      */
+    @GetMapping("/comment")
+    public Result<List<CommentInfo>> getCommentInfo(@RequestParam("pictureId") long pictureId){
+        return yxyPictureService.getComments(String.valueOf(pictureId));
 
+    }
 
     /**
      * 添加评论
      */
+    @PostMapping("/comment")
+    public Result<String> comment(@RequestBody Map<String,String> map,HttpServletRequest request){
+        String token=request.getHeader("token");
+        String username = jwtTokenUtils.getUsernameFromToken(token);
+        String comment = map.get("comment"); //获取评论内容
+        String pictureId = map.get("pictureId");
+        if(comment != null && !comment.equals("") && pictureId != null && !pictureId.equals("")){
+            return  yxyPictureService.commentPicture(pictureId,comment,username);
+        }
+        return Result.falure("评论失败，您未作有效的评论!");
+    }
 
     /*
      *点赞
      */
-    @PostMapping("star")
+    @PostMapping("/star")
     public Result<String> star(@RequestBody Map<String,String> map,HttpServletRequest request){
         return yxyPictureService.star(map,request);
+    }
+    /**
+     * 下载 用于download ++
+     */
+    @PostMapping("download_count")
+    public Result<String> download_count(@RequestBody Map<String,String> map){
+        //获取图片id
+        String pictureId = map.get("pictureId");
+        if (pictureId != null && !pictureId.equals("")){
+            return yxyPictureService.downloadCount(pictureId);
+        }
+        return Result.falure("输入的图片id不存在或表示错误，请重新输入");
     }
 
 

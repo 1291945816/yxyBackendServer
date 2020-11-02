@@ -1,5 +1,7 @@
 package ink.kilig.yxy.mapper;
 
+import ink.kilig.yxy.domain.CommentInfo;
+import ink.kilig.yxy.domain.CommentPO;
 import ink.kilig.yxy.po.PictureInfoPO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -53,15 +55,43 @@ public interface YxyPictureMapper {
     @Select("select isStar from yxyUserStar where yxyUserName=#{username} and pictureId=#{pictureId} limit 1")
     boolean isPictureExist(String username,String pictureId);
 
-    @Update("UPDATE yxyUserStar SET yxyUserStar.isStar=0 WHERE pictureId=#{pictureId} AND yxyUserName=#{username} ")
-    void updatStar(String username,String pictureId);
+    @Update("UPDATE yxyUserStar SET yxyUserStar.isStar=#{isStar} WHERE pictureId=#{pictureId} AND yxyUserName=#{username} ")
+    void updatStar(String username,String pictureId,boolean isStar);
 
     @Update("UPDATE yxyPicture SET yxyPicture.starNum=#{starNum} WHERE yxyPicture.pictureId=#{pictureId}")
-    void updateStarNum(String starNum,String pictureIs);
+    void updateStarNum(long starNum,String pictureId);
+
+    @Select("select yxyPicture.starNum from yxyPicture where yxyPicture.pictureId=#{pictureId} ")
+    long getStarNum(String pictureId);
+
+    @Select("select * from yxyPicture where yxyPicture.pictureId=#{pictureId} ")
+    PictureInfoPO getPictureInfo(String pictureId);
+
+    @Update("UPDATE yxyPicture SET yxyPicture.downloadSum=#{downloadSum} WHERE yxyPicture.pictureId=#{pictureId}")
+    void updateDownloadSum(int downloadSum,String pictureId);
+
 
     @Insert("insert into yxyUserStar(yxyUserName,pictureId,isStar) values(#{yxyUserName},#{pictureId},1)")
     void insertStar(String yxyUserName,String pictureId);
 
+    @Update("UPDATE yxyUserComment SET yxyUserComment.comment=#{comment},yxyUserComment.comment_time=#{commentTime} WHERE pictureId=#{pictureId} AND yxyUserName=#{yxyUserName} ")
+    void updateComment(CommentPO commentPO);
 
+    @Insert("insert into yxyUserComment values(#{yxyUserName},#{pictureId},#{comment},#{commentTime})")
+    void insertComment(CommentPO commentPO);
+
+    @Select(
+            "SELECT\n" +
+                    "	yxyUser.yxyUserName,\n" +
+                    "	yxyUser.yxyNickName,\n" +
+                    "	yxyUserComment.`comment`,\n" +
+                    "	yxyUserComment.comment_time \n" +
+                    "FROM\n" +
+                    "	yxyUserComment\n" +
+                    "	JOIN yxyUser ON yxyUser.yxyUserName = yxyUserComment.yxyUserName \n" +
+                    "WHERE\n" +
+                    "	yxyUserComment.pictureId=#{pictureId}"
+    )
+    List<CommentInfo> getCommentInfo(String pictureId);
 
 }

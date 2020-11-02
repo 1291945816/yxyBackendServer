@@ -3,9 +3,13 @@ package ink.kilig.yxy.config;
 import ink.kilig.yxy.interceptor.CorsInterceptor;
 import ink.kilig.yxy.interceptor.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import javax.servlet.MultipartConfigElement;
 
 /**
  * @author: Hps
@@ -27,5 +31,12 @@ public class IntercepterConfig implements WebMvcConfigurer {
 //        registry.addInterceptor(interceptor).addPathPatterns("/**").excludePathPatterns("/yxyUser/register/**")
 //                .excludePathPatterns("/captcha/**")
 //                .excludePathPatterns("/yxyUser/login/**");
+    }
+    @Bean
+    public MultipartConfigElement multipartConfigElement() {
+
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        factory.setLocation("D:/data/tmp");
+        return factory.createMultipartConfig();
     }
 }

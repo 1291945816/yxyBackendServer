@@ -5,6 +5,7 @@ import ink.kilig.yxy.domain.Result;
 import ink.kilig.yxy.domain.YxyUser;
 import ink.kilig.yxy.service.YxyUserService;
 import ink.kilig.yxy.utils.JwtTokenUtils;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;

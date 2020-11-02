@@ -1,16 +1,19 @@
 package ink.kilig.yxy.service.impl;
 
-import ink.kilig.yxy.domain.PictureVO;
-import ink.kilig.yxy.domain.UploadPictureInfo;
-import ink.kilig.yxy.domain.Result;
+import ink.kilig.yxy.domain.*;
 import ink.kilig.yxy.mapper.YxyPictureMapper;
 import ink.kilig.yxy.po.PictureInfoPO;
 import ink.kilig.yxy.service.YxyPictureService;
 import ink.kilig.yxy.utils.JwtTokenUtils;
+import net.coobird.thumbnailator.Thumbnailator;
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.name.Rename;
+import org.apache.ibatis.binding.BindingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.bind.BindException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,11 +23,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.BindException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author: Hps
@@ -33,7 +33,8 @@ import java.util.Map;
  */
 @Service
 public class YxyPictureServiceImpl implements YxyPictureService {
-    private final String PATH="/picture?pictureId=";
+    private final String PATH="picture?pictureId=";
+    private final String tPATH="/thumbnail?pictureId=";
     private YxyPictureMapper yxyPictureMapper;
     private JwtTokenUtils jwtTokenUtils;
     private String fileRootPath;
@@ -105,6 +106,34 @@ public class YxyPictureServiceImpl implements YxyPictureService {
     }
 
     @Override
+    public byte[] getThumbnailByid(Long pictureId) {
+        FileInputStream stream =null;
+        byte[] bytes =null;
+        if (pictureId!= null){
+            String picturePath = yxyPictureMapper.getPicturePath(pictureId); //原图片路径
+
+            if (picturePath == null) return null;
+                File file = new File(picturePath.substring(0,picturePath.lastIndexOf("/"))+"tmp.jpg");
+//                if (!file.exists()){
+//                    file.mkdirs();
+//                }
+                logger.info(picturePath);
+                try {
+                    Thumbnails.of(new File(picturePath))
+                            .scale(0.1f)
+                            .outputQuality(0.2f)
+                            .toFile(file);
+                    stream=new FileInputStream(file);
+                    bytes = new byte[stream.available()];
+                    stream.read(bytes,0,stream.available());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        }
+        return bytes;
+    }
+
+    @Override
     public Result<List<PictureVO>> getPublishPicture(String username,Long pageNum,Long size) {
         List<PictureInfoPO> pictures = yxyPictureMapper.getPulishPicture(pageNum, size); //获取到照片集合
         List<String> staredPicture = yxyPictureMapper.getStaredPictureByusername(username); //用户的点赞集合
@@ -125,6 +154,7 @@ public class YxyPictureServiceImpl implements YxyPictureService {
             pictureVO.setDownloadNum(pictureInfoPO.getDownloadSum());
             pictureVO.setStarNum(pictureInfoPO.getStarNum());
             pictureVO.setDisplayImgUrl(this.PATH+pictureVO.getImgID());
+            pictureVO.setThumbnailUrl(tPATH+pictureVO.getImgID());
             result.add(pictureVO);
         }
         return Result.success(result,"获取成功");
@@ -132,21 +162,87 @@ public class YxyPictureServiceImpl implements YxyPictureService {
 
     @Override
     public Result<String> star(Map<String, String> map, HttpServletRequest request) {
-//        String token=request.getHeader("token");
-//        String username = jwtTokenUtils.getUsernameFromToken(token);
+        String token=request.getHeader("token");
+        String username = jwtTokenUtils.getUsernameFromToken(token);
         String pictureId = map.get("pictureId");
+        Result<String> result=new Result<String>();
+        result.setCode("200");
+        long starNum;
         if(pictureId == null || pictureId.equals("")) return Result.falure("抱歉，图片Id不可以为空");
         try {
-            yxyPictureMapper.isPictureExist("1800300916", pictureId);
-        }catch (Exception bindException){
+            boolean isStar = yxyPictureMapper.isPictureExist(username, pictureId);
+            yxyPictureMapper.updatStar(username,pictureId,!isStar); //点赞的相反操作
+            starNum = yxyPictureMapper.getStarNum(pictureId);
+            if (isStar) {
+               starNum--;
+               result.setMessage("取消点赞");
+               yxyPictureMapper.updateStarNum(starNum,pictureId);
+            }else
+            {
+                starNum++;
+                result.setMessage("点赞成功");
+                yxyPictureMapper.updateStarNum(starNum,pictureId);
+            }
+
+
+        }catch (BindingException bindException){
             //这里是抛空异常的时候
-            yxyPictureMapper.insertStar("1800300916",pictureId);
-
-
-
+            yxyPictureMapper.insertStar(username,pictureId); //这里是第一次点赞
+             starNum = yxyPictureMapper.getStarNum(pictureId);
+            starNum ++; // 点赞数量
+            result.setMessage("点赞成功");
+            yxyPictureMapper.updateStarNum(starNum,pictureId); //记录点赞数量
         }
-
-        //logger.info(String.valueOf(pictureExist));
-        return null;
+        return result;
     }
+
+    @Override
+    public Result<String> downloadCount(String pictureId) {
+        PictureInfoPO pictureInfo = yxyPictureMapper.getPictureInfo(pictureId);
+        if(pictureInfo != null){
+            int downloadSum = pictureInfo.getDownloadSum();
+            yxyPictureMapper.updateDownloadSum(++downloadSum,pictureId);
+            return Result.success("下载成功+1");
+        }
+        return Result.falure("由于未知的原因，计数失败");
+    }
+
+    /**
+     * 数据库设计问题，只能评论一次
+     * @param pictureId
+     * @param comment
+     * @param username
+     * @return
+     */
+    @Override
+    public Result<String> commentPicture(String pictureId, String comment, String username) {
+
+        CommentPO commentPO=new CommentPO();
+        commentPO.setComment(comment);
+        commentPO.setPictureId(pictureId);
+        commentPO.setYxyUserName(username);
+        commentPO.setCommentTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())); //创建时间
+        try {
+             yxyPictureMapper.isPictureExist(username, pictureId);//判断一下 是否在那个数据库表上面存在
+            //能进行下一步表示可以
+            yxyPictureMapper.updateComment(commentPO); //更新评论信息
+            return Result.success("评论成功");
+        }catch (BindingException bindException){
+            //这里是抛空异常的时候
+            try {
+                yxyPictureMapper.insertComment(commentPO);
+            }catch (Exception e){
+                return Result.falure("评论失败，图片不存在!");
+            }
+            return Result.success("评论成功");
+        }
+    }
+
+    @Override
+    public Result<List<CommentInfo>> getComments(String pictureId) {
+        List<CommentInfo> infos = yxyPictureMapper.getCommentInfo(pictureId);
+        return Result.success(infos,"获取成功");
+
+    }
+
 }
