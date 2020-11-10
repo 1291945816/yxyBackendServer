@@ -20,6 +20,15 @@ public class PictureInfoPO {
     private int downloadSum;
     private String yxyNickName;
     private String yxyUserName;
+    private String thumbnailPath;
+
+    public String getThumbnailPath() {
+        return thumbnailPath;
+    }
+
+    public void setThumbnailPath(String thumbnailPath) {
+        this.thumbnailPath = thumbnailPath;
+    }
 
     public String getYxyNickName() {
         return yxyNickName;

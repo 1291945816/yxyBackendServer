@@ -16,6 +16,7 @@ public class UploadPictureInfo implements Serializable {
     private String pictureName; //照片名字
     private MultipartFile file; //文件信息
 
+
     public boolean isPublishVisiable() {
         return publishVisiable;
     }

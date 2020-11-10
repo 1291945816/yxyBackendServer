@@ -9,6 +9,7 @@ import ink.kilig.yxy.utils.MinIOUtils;
 import net.coobird.thumbnailator.Thumbnailator;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.name.Rename;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.ibatis.binding.BindingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -61,12 +59,18 @@ public class YxyPictureServiceImpl implements YxyPictureService {
         infoPO.setAblumId(Long.parseLong(uploadPictureInfo.getAblumId())); //设置所位于的相册
         if(file != null){
 
-            String filePath = minIOUtils.uploadPicture(file,uploadPictureInfo.getPictureName(), infoPO.getAblumId()+"");
+            String string = DigestUtils.md5Hex(uploadPictureInfo.getPictureName() + "&" + Calendar.getInstance().getTimeInMillis()).toString();
+            String filePath = minIOUtils.uploadPicture(file,string, infoPO.getAblumId()+"");
             infoPO.setPicturePath(filePath); //设置路径
+
+            InputStream stream = getThumbnail(file);
+            String thumbnailUrl = minIOUtils.uploadPicture(file, string, "thumbnail", stream);
+            //设置缩略图路径
             infoPO.setPictureCreateTime(String.valueOf(Calendar.getInstance().getTimeInMillis())); //设置创建时间
             infoPO.setPictureName(uploadPictureInfo.getPictureName()); //设置照片名字
             infoPO.setPictureInfo(uploadPictureInfo.getPictureInfo()); //设置照片的描述信息
             infoPO.setPublishVisiable(uploadPictureInfo.isPublishVisiable()); //设置是否公布到广场
+            infoPO.setThumbnailPath(thumbnailUrl); //缩略图
             boolean isUpload = yxyPictureMapper.upload(infoPO);
             if (isUpload)
                 return Result.success("上传图片成功");
@@ -78,64 +82,39 @@ public class YxyPictureServiceImpl implements YxyPictureService {
 
     }
 
-//    @Override
-//    public byte[] getPictureByid(Long pictureId) {
-//        FileInputStream stream =null;
-//        byte[] bytes =null;
-//        if (pictureId!= null){
-//            String picturePath = yxyPictureMapper.getPicturePath(pictureId);
-//            if (picturePath == null) return null;
-//            try {
-//                stream=new FileInputStream(new File(picturePath));
-//                try {
-//                    bytes = new byte[stream.available()];
-//                    stream.read(bytes,0,stream.available());
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return bytes;
-//    }
-
-
     /**
-     *缩略图处理
+     * 获取缩略图
+     * @param file
+     * @return
      */
+    public InputStream getThumbnail(MultipartFile file){
+        InputStream stream=null;
+        logger.info(file.getSize()+" "+file.getOriginalFilename());
+        File file1=new File(fileRootPath+file.getOriginalFilename());
+        if (!file1.exists()){
+            file1.getParentFile().mkdir();
+            try {
+                file1.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            Thumbnails.of(file.getInputStream())
+                    .width(800)
+                    .outputQuality(0.8f)
+                    .toFile(file1);
+             stream = new FileInputStream(file1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return  stream;
+    }
 
-//
-//    private String getThumbnailByid(Long pictureId) {
-//        FileInputStream stream =null;
-//        byte[] bytes =null;
-//        if (pictureId!= null){
-//            String picturePath = yxyPictureMapper.getPicturePath(pictureId); //原图片路径
-//
-//            if (picturePath == null) return null;
-//                File file = new File(picturePath.substring(0,picturePath.lastIndexOf("/"))+"tmp.jpg");
-////                if (!file.exists()){
-////                    file.mkdirs();
-////                }
-//                logger.info(picturePath);
-//                try {
-//                    Thumbnails.of(new File(picturePath))
-//                            .scale(0.1f)
-//                            .outputQuality(0.2f)
-//                            .toFile(file);
-//                    stream=new FileInputStream(file);
-//                    bytes = new byte[stream.available()];
-//                    stream.read(bytes,0,stream.available());
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//        }
-////        return bytes;
-//    }
 
     @Override
     public Result<List<PictureVO>> getPublishPicture(String username,Long pageNum,Long size) {
-        List<PictureInfoPO> pictures = yxyPictureMapper.getPulishPicture(pageNum, size); //获取到照片集合
+        List<PictureInfoPO> pictures = yxyPictureMapper.getPulishPicture(pageNum*size, size); //获取到照片集合
         List<String> staredPicture = yxyPictureMapper.getStaredPictureByusername(username); //用户的点赞集合
         logger.info(pictures.toString());
         logger.info(staredPicture.toString());
@@ -154,7 +133,7 @@ public class YxyPictureServiceImpl implements YxyPictureService {
             pictureVO.setDownloadNum(pictureInfoPO.getDownloadSum());
             pictureVO.setStarNum(pictureInfoPO.getStarNum());
             pictureVO.setDisplayImgUrl(pictureInfoPO.getPicturePath());
-            pictureVO.setThumbnailUrl(tPATH+pictureVO.getImgID());
+            pictureVO.setThumbnailUrl(pictureInfoPO.getThumbnailPath());
             result.add(pictureVO);
         }
         return Result.success(result,"获取成功");
@@ -208,7 +187,7 @@ public class YxyPictureServiceImpl implements YxyPictureService {
     }
 
     /**
-     * 数据库设计问题，只能评论一次
+     *
      * @param pictureId
      * @param comment
      * @param username

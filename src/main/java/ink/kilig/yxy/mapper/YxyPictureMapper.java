@@ -21,7 +21,7 @@ import java.util.List;
 @Repository
 public interface YxyPictureMapper {
     @Insert("insert into yxyPicture(pictureName,pictureCreateTime,picturePath,publishVisiable" +
-            ",pictureInfo,ablumId) values(#{pictureName},#{pictureCreateTime},#{picturePath},#{publishVisiable},#{pictureInfo},#{ablumId})")
+            ",pictureInfo,ablumId,thumbnailPath) values(#{pictureName},#{pictureCreateTime},#{picturePath},#{publishVisiable},#{pictureInfo},#{ablumId},#{thumbnailPath})")
     boolean upload(PictureInfoPO pictureInfoPO);
 
     @Select("select picturePath from yxyPicture where pictureId=#{pictureId} limit 1")
@@ -37,6 +37,7 @@ public interface YxyPictureMapper {
             "	yxyPicture.pictureName,\n" +
             "	yxyPicture.picturePath,\n" +
             "	yxyPicture.publishVisiable,\n" +
+            "yxyPicture.thumbnailPath,"+
             "	yxyPicture.pictureCreateTime\n" +
             "FROM\n" +
             "	yxyUser,\n" +

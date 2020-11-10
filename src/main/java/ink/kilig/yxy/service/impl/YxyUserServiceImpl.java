@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Base64;
+import java.util.Calendar;
 import java.util.Objects;
 
 /**
@@ -68,7 +69,9 @@ public class YxyUserServiceImpl implements YxyUserService {
      */
     @Override
     public boolean uploadAvatar(MultipartFile avatar, YxyUser yxyUser) {
-        String uploadAvatar = minIOUtils.uploadAvatar(avatar, yxyUser.getYxyUserName());
+        String s=Calendar.getInstance().getTimeInMillis()+""+yxyUser.getYxyUserName()+"yxy welcome you";
+        String string = DigestUtils.md5Hex(s).toString();
+        String uploadAvatar = minIOUtils.uploadAvatar(avatar,string, yxyUser.getYxyUserName());
         yxyUserMapper.uploadUserAvatar(uploadAvatar,yxyUser.getYxyUserName());
         return true;
     }
@@ -107,7 +110,6 @@ public class YxyUserServiceImpl implements YxyUserService {
     @Override
     public YxyUser getUserInfo(String username) {
         YxyUser userInfo = yxyUserMapper.getUserInfo(username);
-        userInfo.setYxyUserAvatar("");
         userInfo.setYxyPassword("");
         return userInfo;
     }
