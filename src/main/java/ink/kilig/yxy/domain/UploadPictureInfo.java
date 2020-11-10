@@ -12,8 +12,8 @@ import java.io.Serializable;
 public class UploadPictureInfo implements Serializable {
     private boolean publishVisiable; //是否公布到广场
     private String pictureInfo; //照片的相关信息
-    private String ablumId; //相册Id
-    private String pittureName; //照片名字
+    private String ablumId; //相c册Id
+    private String pictureName; //照片名字
     private MultipartFile file; //文件信息
 
     public boolean isPublishVisiable() {
@@ -40,23 +40,12 @@ public class UploadPictureInfo implements Serializable {
         this.ablumId = ablumId;
     }
 
-    public String getPittureName() {
-        return pittureName;
+    public String getPictureName() {
+        return pictureName;
     }
 
-    @Override
-    public String toString() {
-        return "UploadPictureInfo{" +
-                "publishVisiable=" + publishVisiable +
-                ", pictureInfo='" + pictureInfo + '\'' +
-                ", ablumId='" + ablumId + '\'' +
-                ", pittureName='" + pittureName + '\'' +
-                ", file=" + file +
-                '}';
-    }
-
-    public void setPittureName(String pittureName) {
-        this.pittureName = pittureName;
+    public void setPictureName(String pictureName) {
+        this.pictureName = pictureName;
     }
 
     public MultipartFile getFile() {

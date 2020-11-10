@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -74,5 +75,15 @@ public class YxyUserAblumServiceImpl implements YxyUserAblumService {
                 return Result.falure("相册不存在，修改失败!");
         }
         return Result.falure("由于未知的原因，修改相册名称失败!");
+    }
+
+    @Override
+    public Result<List<Ablum>> getAblumInfo(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        String username = jwtTokenUtils.getUsernameFromToken(token);
+        List<Ablum> info = yxyUserAblumMapper.getAblumInfo(username);
+        return Result.success(info,"获取成功");
+
+
     }
 }

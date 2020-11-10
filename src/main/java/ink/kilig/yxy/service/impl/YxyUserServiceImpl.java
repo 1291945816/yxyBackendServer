@@ -3,6 +3,8 @@ package ink.kilig.yxy.service.impl;
 import ink.kilig.yxy.domain.YxyUser;
 import ink.kilig.yxy.mapper.YxyUserMapper;
 import ink.kilig.yxy.service.YxyUserService;
+import ink.kilig.yxy.utils.MinIOUtils;
+import io.minio.MinioClient;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +34,14 @@ public class YxyUserServiceImpl implements YxyUserService {
 
     private final String fileRootPath;
 
+    private final MinIOUtils minIOUtils;
+
 
     @Autowired
     public YxyUserServiceImpl(YxyUserMapper yxyUserMapper,
+                              MinIOUtils minIOUtils,
                               @Value("${file.avatar}") String fileRootPath) {
+        this.minIOUtils=minIOUtils;
         this.fileRootPath=fileRootPath;
         this.yxyUserMapper=yxyUserMapper;
     }
@@ -62,30 +68,9 @@ public class YxyUserServiceImpl implements YxyUserService {
      */
     @Override
     public boolean uploadAvatar(MultipartFile avatar, YxyUser yxyUser) {
-        String filePath = (new StringBuffer(this.fileRootPath))
-                .append(yxyUser.getYxyUserName())
-                .append(
-                        Objects.requireNonNull(
-                                avatar.getOriginalFilename()).substring(avatar.getOriginalFilename().lastIndexOf('.')))
-                .toString();
-
-        File file = new File(filePath);
-        if (!file.exists()){
-            file.mkdirs();
-        }else
-        {
-            try {
-                //保存文件
-                avatar.transferTo(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            logger.info(filePath);
-            //这里应该是将路径存到数据库中
-            yxyUserMapper.uploadUserAvatar(filePath,yxyUser.getYxyUserName());
-             return true;
-        }
-        return false;
+        String uploadAvatar = minIOUtils.uploadAvatar(avatar, yxyUser.getYxyUserName());
+        yxyUserMapper.uploadUserAvatar(uploadAvatar,yxyUser.getYxyUserName());
+        return true;
     }
 
     /**

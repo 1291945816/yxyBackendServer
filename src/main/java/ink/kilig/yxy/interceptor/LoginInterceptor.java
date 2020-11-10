@@ -54,7 +54,7 @@ public class LoginInterceptor implements HandlerInterceptor {
        }else {
            object=new HashMap<>();
            object.put("code","500");
-           object.put("message","抱歉，你的账户信息已经过期或者你未提供有效的验证信息,请重新登陆。");
+           object.put("message","抱歉，你的账户信息已经过期或者你未提供有效的验证信息,请重新登录。");
            String s = (new ObjectMapper()).writeValueAsString(object);
            response.getWriter().write(s);
        }

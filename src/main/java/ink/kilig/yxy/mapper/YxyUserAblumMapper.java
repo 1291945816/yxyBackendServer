@@ -1,11 +1,10 @@
 package ink.kilig.yxy.mapper;
 
 import ink.kilig.yxy.domain.Ablum;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author: Hps
@@ -24,4 +23,11 @@ public interface YxyUserAblumMapper {
     @Update("update yxyUserAlbum set ablumName=#{newAblumName} where ablumId=#{ablumId} ")
     boolean changeAblum(String newAblumName,String ablumId);
 
+    @Select("SELECT\n" +
+            "ablumId,\n" +
+            "ablumName,\n" +
+            "ablumCreateTime\n" +
+            "FROM yxyUserAlbum\n" +
+            "WHERE yxyUserAlbum.yxyUserName=#{username}\n")
+    List<Ablum> getAblumInfo(String username);
 }

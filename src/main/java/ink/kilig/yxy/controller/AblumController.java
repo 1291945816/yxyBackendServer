@@ -57,7 +57,7 @@ public class AblumController {
 
 
     @GetMapping("/info")
-    public Result<List<Ablum>> info(){
-        return null;
+    public Result<List<Ablum>> info(HttpServletRequest request){
+        return yxyUserAblumService.getAblumInfo(request);
     }
 }

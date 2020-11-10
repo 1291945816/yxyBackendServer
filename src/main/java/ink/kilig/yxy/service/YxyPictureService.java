@@ -17,8 +17,8 @@ import java.util.Map;
  */
 public interface YxyPictureService {
     Result<String> uploadPicture(UploadPictureInfo uploadPictureInfo);
-    byte[] getPictureByid(Long pictureId);
-    byte[] getThumbnailByid(Long pictureId);
+//    byte[] getPictureByid(Long pictureId);
+//    byte[] getThumbnailByid(Long pictureId);
     Result<List<PictureVO>> getPublishPicture(String username,Long pageNum,Long size);
     Result<String> star(@RequestBody Map<String,String> map,HttpServletRequest request);
     Result<String> downloadCount(String pictureId);
