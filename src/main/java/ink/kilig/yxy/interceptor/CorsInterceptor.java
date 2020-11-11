@@ -9,11 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * 跨域处理拦截器 弃用
  * @author: Hps
  * @date: 2020/8/18 17:15
  * @description:
  */
-@Component
+
+@Deprecated
 public class CorsInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
