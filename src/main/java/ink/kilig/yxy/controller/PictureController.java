@@ -45,25 +45,6 @@ public class PictureController {
         return yxyPictureService.uploadPicture(uploadPictureInfo);
     }
 
-//    /**
-//     *返回图片
-//     * @param pictureId 图片id
-//     * @return
-//     */
-//    @GetMapping(value = "",produces = {MediaType.IMAGE_JPEG_VALUE,MediaType.IMAGE_PNG_VALUE})
-//    public byte[] getPicture(@RequestParam Long pictureId){
-//        return yxyPictureService.getPictureByid(pictureId);
-//    }
-
-//    /**
-//     * 返回缩略图
-//     */
-//    @GetMapping(value = "/thumbnail",produces = {MediaType.IMAGE_JPEG_VALUE,MediaType.IMAGE_PNG_VALUE})
-//    public byte[] getThumbnail(@RequestParam Long pictureId){
-//        return yxyPictureService.getThumbnailByid(pictureId);
-//    }
-
-
 
     /**
      * 返回图片详情集合

@@ -1,6 +1,5 @@
 package ink.kilig.yxy.config;
 
-import ink.kilig.yxy.interceptor.CorsInterceptor;
 import ink.kilig.yxy.interceptor.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
