@@ -127,6 +127,7 @@ public class YxyPictureServiceImpl implements YxyPictureService {
 
                 pictureVO.setStared(true);
             }
+            pictureVO.setAuthorAvatar(pictureInfoPO.getYxyUserAvatar());
             pictureVO.setAuthorId(pictureInfoPO.getYxyUserName());
             pictureVO.setAuthorName(pictureInfoPO.getYxyNickName());
             pictureVO.setDisplayImgName(pictureInfoPO.getPictureName());

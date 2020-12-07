@@ -15,6 +15,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
        String token=request.getHeader("token");
-        Map<String,String> object=null;
+        Map<String,Object> object=null;
         response.setContentType("application/json; charset=UTF-8");
        if(token!= null && !token.equals("") && !jwtTokenUtils.isTokenExpired(token)){
            String username = jwtTokenUtils.getUsernameFromToken(token);
@@ -47,14 +48,16 @@ public class LoginInterceptor implements HandlerInterceptor {
                object=new HashMap<>();
                object.put("code","500");
                object.put("message","抱歉，用户不存在，请你先注册再进行登录。");
+               object.put("data",null);
                String s = (new ObjectMapper()).writeValueAsString(object);
                response.getWriter().write(s);
                return false;
            }
        }else {
-           object=new HashMap<>();
+           object=new HashMap<String, Object>();
            object.put("code","500");
            object.put("message","抱歉，你的账户信息已经过期或者你未提供有效的验证信息,请重新登录。");
+           object.put("data",null);
            String s = (new ObjectMapper()).writeValueAsString(object);
            response.getWriter().write(s);
        }

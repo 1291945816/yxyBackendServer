@@ -28,6 +28,7 @@ public interface YxyPictureMapper {
     String getPicturePath(Long pictureId);
 
     @Select("SELECT\n" +
+            "yxyUser.yxyUserAvatar,\n"+
             "	yxyUser.yxyNickName,\n" +
             "	yxyUser.yxyUserName,\n" +
             "	yxyPicture.starNum,\n" +

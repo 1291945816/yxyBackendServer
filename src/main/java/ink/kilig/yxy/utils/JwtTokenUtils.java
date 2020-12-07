@@ -27,6 +27,7 @@ public class JwtTokenUtils implements Serializable {
         return header;
     }
 
+
     public JwtTokenUtils(@Value("${jwt.base64-secret}") String base64_secret,
                          @Value("${jwt.token-validity-in-seconds}") Long expiration_time,
                          @Value(("${jwt.header}")) String header) {

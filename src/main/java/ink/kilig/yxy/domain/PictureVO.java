@@ -15,6 +15,15 @@ public class PictureVO  {
     private boolean isStared=false; //是否点赞
     private int downloadNum; //下载数量
     private String thumbnailUrl; //缩图
+    private String authorAvatar;
+
+    public String getAuthorAvatar() {
+        return authorAvatar;
+    }
+
+    public void setAuthorAvatar(String authorAvatar) {
+        this.authorAvatar = authorAvatar;
+    }
 
     public String getThumbnailUrl() {
         return thumbnailUrl;

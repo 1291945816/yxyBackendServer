@@ -21,6 +21,15 @@ public class PictureInfoPO {
     private String yxyNickName;
     private String yxyUserName;
     private String thumbnailPath;
+    private String yxyUserAvatar;
+
+    public String getYxyUserAvatar() {
+        return yxyUserAvatar;
+    }
+
+    public void setYxyUserAvatar(String yxyUserAvatar) {
+        this.yxyUserAvatar = yxyUserAvatar;
+    }
 
     public String getThumbnailPath() {
         return thumbnailPath;

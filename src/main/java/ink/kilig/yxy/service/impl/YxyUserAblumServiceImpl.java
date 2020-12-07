@@ -1,6 +1,7 @@
 package ink.kilig.yxy.service.impl;
 
 import ink.kilig.yxy.domain.Ablum;
+import ink.kilig.yxy.domain.PrivatePicture;
 import ink.kilig.yxy.domain.Result;
 import ink.kilig.yxy.mapper.YxyUserAblumMapper;
 import ink.kilig.yxy.service.YxyUserAblumService;
@@ -85,5 +86,11 @@ public class YxyUserAblumServiceImpl implements YxyUserAblumService {
         return Result.success(info,"获取成功");
 
 
+    }
+
+    @Override
+    public Result<List<PrivatePicture>> getPictures(String username, Long pageNum, Long size) {
+        List<PrivatePicture> pictureOfAlbums = yxyUserAblumMapper.getPictureOfAlbum(username, pageNum, size);
+        return Result.success(pictureOfAlbums, "获取所有图片成功");
     }
 }

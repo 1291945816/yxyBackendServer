@@ -1,6 +1,7 @@
 package ink.kilig.yxy.mapper;
 
 import ink.kilig.yxy.domain.Ablum;
+import ink.kilig.yxy.domain.PrivatePicture;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -24,10 +25,26 @@ public interface YxyUserAblumMapper {
     boolean changeAblum(String newAblumName,String ablumId);
 
     @Select("SELECT\n" +
-            "ablumId,\n" +
-            "ablumName,\n" +
-            "ablumCreateTime\n" +
-            "FROM yxyUserAlbum\n" +
-            "WHERE yxyUserAlbum.yxyUserName=#{username}\n")
+            "	a.ablumId AS ablumId,\n" +
+            "	a.ablumName AS ablumName,\n" +
+            "	a.ablumCreateTime AS ablumCreateTime,\n" +
+            "	COUNT( b.pictureId ) AS nums \n" +
+            "FROM\n" +
+            "	yxyUserAlbum a\n" +
+            "	LEFT JOIN yxyPicture b ON a.ablumId = b.ablumId \n" +
+            "WHERE\n" +
+            "	a.yxyUserName = #{username} \n" +
+            "GROUP BY\n" +
+            "	a.ablumId")
     List<Ablum> getAblumInfo(String username);
+
+
+    @Select("SELECT\n" +
+            "c.pictureId as id,\n" +
+            "c.publishVisiable as publish,\n" +
+            "c.thumbnailPath as thumbnailUrl,\n" +
+            "c.picturePath as imgUrl\n" +
+            "FROM yxyUser a,yxyUserAlbum b,yxyPicture c\n" +
+            "WHERE a.yxyUserName=#{username} AND a.yxyUserName=b.yxyUserName AND c.ablumId=b.ablumId ORDER BY c.pictureCreateTime DESC LIMIT #{pageNum},#{size}")
+    List<PrivatePicture> getPictureOfAlbum(String username,Long pageNum,Long size);
 }

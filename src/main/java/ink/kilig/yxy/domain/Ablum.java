@@ -8,6 +8,16 @@ package ink.kilig.yxy.domain;
 public class Ablum {
     private String ablumId;
     private String ablumName;
+    private int nums;
+
+    public int getNums() {
+        return nums;
+    }
+
+    public void setNums(int nums) {
+        this.nums = nums;
+    }
+
     private String ablumCreateTime;
 
     public String getAblumId() {

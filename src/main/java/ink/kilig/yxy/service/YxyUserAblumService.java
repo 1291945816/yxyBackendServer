@@ -1,6 +1,7 @@
 package ink.kilig.yxy.service;
 
 import ink.kilig.yxy.domain.Ablum;
+import ink.kilig.yxy.domain.PrivatePicture;
 import ink.kilig.yxy.domain.Result;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,4 +18,6 @@ public interface YxyUserAblumService {
     Result<String> deleteAblum(Map<String,String> map);
     Result<String> changeAblumName(Map<String,String> map);
     Result<List<Ablum>> getAblumInfo(HttpServletRequest request);
+
+    Result<List<PrivatePicture>> getPictures(String username,Long pageNum,Long size);
 }

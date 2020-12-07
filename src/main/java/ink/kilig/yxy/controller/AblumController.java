@@ -1,7 +1,6 @@
 package ink.kilig.yxy.controller;
 
-import ink.kilig.yxy.domain.Ablum;
-import ink.kilig.yxy.domain.Result;
+import ink.kilig.yxy.domain.*;
 import ink.kilig.yxy.service.YxyUserAblumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -60,4 +59,20 @@ public class AblumController {
     public Result<List<Ablum>> info(HttpServletRequest request){
         return yxyUserAblumService.getAblumInfo(request);
     }
+
+    @GetMapping("pictures")
+    public Result<List<PrivatePicture>> pictures(@CurrentUser String username,@RequestParam Map<String,String> requestData){
+        String pageNum = requestData.get("pageNum");
+        Long pageNum_long = Long.valueOf(pageNum);
+        String size = requestData.get("size");
+        Long size_long = Long.valueOf(size);
+        if (pageNum== null || size==null){
+            return Result.falure("请求包含的页码格式不对");
+        }else {
+            return yxyUserAblumService.getPictures(username,pageNum_long,size_long);
+        }
+    }
+
+
+
 }
