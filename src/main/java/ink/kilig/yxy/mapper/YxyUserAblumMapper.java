@@ -46,8 +46,8 @@ public interface YxyUserAblumMapper {
             "c.thumbnailPath as thumbnailUrl,\n" +
             "c.picturePath as imgUrl\n" +
             "FROM yxyUser a,yxyUserAlbum b,yxyPicture c\n" +
-            "WHERE a.yxyUserName=#{username} AND a.yxyUserName=b.yxyUserName AND c.ablumId=b.ablumId ORDER BY c.pictureCreateTime DESC LIMIT #{pageNum},#{size}")
-    List<PrivatePicture> getPictureOfAlbum(String username,Long pageNum,Long size);
+            "WHERE a.yxyUserName=#{username} AND a.yxyUserName=b.yxyUserName AND c.ablumId=b.ablumId ORDER BY c.pictureCreateTime DESC ")
+    List<PrivatePicture> getPictureOfAlbum(String username);
 
 
 
@@ -68,6 +68,10 @@ public interface YxyUserAblumMapper {
      */
     @Update("UPDATE yxyPicture as a SET a.publishVisiable=#{publish} WHERE a.pictureId=#{pictureId}")
     public void updatePublish(boolean publish,String pictureId);
+
+
+    @Delete("DELETE from yxyPicture WHERE yxyPicture.pictureId=#{pictureId}")
+    public void deletePicture(String pictureId);
 
 
 }

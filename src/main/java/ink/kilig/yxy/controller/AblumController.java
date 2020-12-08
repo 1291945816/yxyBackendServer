@@ -61,16 +61,8 @@ public class AblumController {
     }
 
     @GetMapping("pictures")
-    public Result<List<PrivatePicture>> pictures(@CurrentUser String username,@RequestParam Map<String,String> requestData){
-        String pageNum = requestData.get("pageNum");
-        Long pageNum_long = Long.valueOf(pageNum);
-        String size = requestData.get("size");
-        Long size_long = Long.valueOf(size);
-        if (pageNum== null || size==null){
-            return Result.falure("请求包含的页码格式不对");
-        }else {
-            return yxyUserAblumService.getPictures(username,pageNum_long,size_long);
-        }
+    public Result<List<PrivatePicture>> pictures(@CurrentUser String username){
+            return yxyUserAblumService.getPictures(username);
     }
 
 
@@ -98,6 +90,13 @@ public class AblumController {
         }
     }
 
-
+    @PostMapping("/deletePicture/{pictureId}")
+    public Result<String> deletePicture(@PathVariable String pictureId){
+        if ( pictureId == null||pictureId.isEmpty() )
+        {
+            return Result.falure("输入的相片ID不正确");
+        }else
+            return yxyUserAblumService.deletePicture(pictureId);
+    }
 
 }

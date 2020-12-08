@@ -90,8 +90,8 @@ public class YxyUserAblumServiceImpl implements YxyUserAblumService {
     }
 
     @Override
-    public Result<List<PrivatePicture>> getPictures(String username, Long pageNum, Long size) {
-        List<PrivatePicture> pictureOfAlbums = yxyUserAblumMapper.getPictureOfAlbum(username, pageNum, size);
+    public Result<List<PrivatePicture>> getPictures(String username) {
+        List<PrivatePicture> pictureOfAlbums = yxyUserAblumMapper.getPictureOfAlbum(username);
         return Result.success(pictureOfAlbums, "获取所有图片成功");
     }
 
@@ -105,6 +105,12 @@ public class YxyUserAblumServiceImpl implements YxyUserAblumService {
     public Result<String> changePublishStatus(boolean publish, String pictureId) {
         yxyUserAblumMapper.updatePublish(publish,pictureId);
         return Result.success("更新发布状态成功");
+    }
+
+    @Override
+    public Result<String> deletePicture(String pictureId) {
+        yxyUserAblumMapper.deletePicture(pictureId);
+        return Result.success("删除图片成功");
     }
 
 }

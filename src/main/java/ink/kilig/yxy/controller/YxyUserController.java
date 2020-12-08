@@ -199,5 +199,5 @@ public class YxyUserController {
         token = jwtTokenUtils.refreshToken(token);
         return Result.success(token,"刷新成功");
     }
-    
+
 }
