@@ -1,6 +1,7 @@
 package ink.kilig.yxy.service.impl;
 
 import ink.kilig.yxy.domain.YxyUser;
+import ink.kilig.yxy.domain.YxyUserDetail;
 import ink.kilig.yxy.mapper.YxyUserMapper;
 import ink.kilig.yxy.service.YxyUserService;
 import ink.kilig.yxy.utils.MinIOUtils;
@@ -108,9 +109,11 @@ public class YxyUserServiceImpl implements YxyUserService {
     }
 
     @Override
-    public YxyUser getUserInfo(String username) {
-        YxyUser userInfo = yxyUserMapper.getUserInfo(username);
-        userInfo.setYxyPassword("");
-        return userInfo;
+    public YxyUserDetail getUserInfo(String username) {
+        YxyUserDetail userDetail = yxyUserMapper.getUserDetail(username);
+        long comment = yxyUserMapper.getCommentByUsername(username);
+        userDetail.setCommentSum(comment);
+        userDetail.setYxyPassword("");
+        return userDetail;
     }
 }

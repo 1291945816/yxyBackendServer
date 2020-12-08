@@ -3,6 +3,7 @@ package ink.kilig.yxy.service;
 import ink.kilig.yxy.domain.Ablum;
 import ink.kilig.yxy.domain.PrivatePicture;
 import ink.kilig.yxy.domain.Result;
+import ink.kilig.yxy.domain.YxyUser;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -20,4 +21,9 @@ public interface YxyUserAblumService {
     Result<List<Ablum>> getAblumInfo(HttpServletRequest request);
 
     Result<List<PrivatePicture>> getPictures(String username,Long pageNum,Long size);
+
+
+    Result<List<YxyUser>> getStaredInfo(String pictureId);
+
+    Result<String> changePublishStatus(boolean publish,String pictureId);
 }

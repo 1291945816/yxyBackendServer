@@ -3,6 +3,7 @@ package ink.kilig.yxy.controller;
 import com.wf.captcha.utils.CaptchaUtil;
 import ink.kilig.yxy.domain.Result;
 import ink.kilig.yxy.domain.YxyUser;
+import ink.kilig.yxy.domain.YxyUserDetail;
 import ink.kilig.yxy.service.YxyUserService;
 import ink.kilig.yxy.utils.JwtTokenUtils;
 
@@ -184,7 +185,7 @@ public class YxyUserController {
      * 获取用户信息
      */
     @GetMapping("/userInfo")
-    public Result<YxyUser> getUserInfo(HttpServletRequest request){
+    public Result<YxyUserDetail> getUserInfo(HttpServletRequest request){
         String token=request.getHeader("token");
         String username = jwtTokenUtils.getUsernameFromToken(token);
         return Result.success(yxyUserService.getUserInfo(username),"获取用户信息成功!");
@@ -198,7 +199,5 @@ public class YxyUserController {
         token = jwtTokenUtils.refreshToken(token);
         return Result.success(token,"刷新成功");
     }
-
-
-
+    
 }

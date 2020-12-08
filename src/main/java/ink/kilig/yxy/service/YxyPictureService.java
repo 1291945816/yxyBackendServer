@@ -1,7 +1,8 @@
 package ink.kilig.yxy.service;
 
 import ink.kilig.yxy.domain.CommentInfo;
-import ink.kilig.yxy.domain.PictureVO;
+import ink.kilig.yxy.domain.YxyUser;
+import ink.kilig.yxy.vo.PictureVO;
 import ink.kilig.yxy.domain.UploadPictureInfo;
 import ink.kilig.yxy.domain.Result;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,5 +24,6 @@ public interface YxyPictureService {
     Result<String> downloadCount(String pictureId);
     Result<String> commentPicture(String pictureId,String comment,String username);
     Result<List<CommentInfo>> getComments(String pictureId);
+
 
 }

@@ -2,6 +2,7 @@ package ink.kilig.yxy.mapper;
 
 import ink.kilig.yxy.domain.Ablum;
 import ink.kilig.yxy.domain.PrivatePicture;
+import ink.kilig.yxy.domain.YxyUser;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -47,4 +48,26 @@ public interface YxyUserAblumMapper {
             "FROM yxyUser a,yxyUserAlbum b,yxyPicture c\n" +
             "WHERE a.yxyUserName=#{username} AND a.yxyUserName=b.yxyUserName AND c.ablumId=b.ablumId ORDER BY c.pictureCreateTime DESC LIMIT #{pageNum},#{size}")
     List<PrivatePicture> getPictureOfAlbum(String username,Long pageNum,Long size);
+
+
+
+    /**
+     * 获取用户点赞集合
+     */
+
+    @Select("\tSELECT\n" +
+            "\t\tc.yxyNickName,\n" +
+            "\t\tc.yxyUserName\n" +
+            "\tFROM yxyUserStar b,yxyUser c\n" +
+            "\tWHERE  b.yxyUserName = c.yxyUserName AND b.pictureId=#{pictureId}AND b.isStar=TRUE")
+    List<YxyUser> getStaredDetails(String pictureId);
+
+
+    /**
+     * 更新状态
+     */
+    @Update("UPDATE yxyPicture as a SET a.publishVisiable=#{publish} WHERE a.pictureId=#{pictureId}")
+    public void updatePublish(boolean publish,String pictureId);
+
+
 }

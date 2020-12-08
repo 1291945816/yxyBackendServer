@@ -3,11 +3,10 @@ package ink.kilig.yxy.controller;
 import ink.kilig.yxy.domain.*;
 import ink.kilig.yxy.service.YxyPictureService;
 import ink.kilig.yxy.utils.JwtTokenUtils;
-import org.apache.juli.logging.LogFactory;
+import ink.kilig.yxy.vo.PictureVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,7 +49,7 @@ public class PictureController {
      * 返回图片详情集合
      */
     @GetMapping("/pictures")
-    public Result<List<PictureVO>> getPictures(@RequestParam Map<String,String> map,HttpServletRequest request){
+    public Result<List<PictureVO>> getPictures(@RequestParam Map<String,String> map, HttpServletRequest request){
         String token=request.getHeader("token");
         String username = jwtTokenUtils.getUsernameFromToken(token);
         String pageNum = map.get("pageNum");
@@ -103,6 +102,14 @@ public class PictureController {
         }
         return Result.falure("输入的图片id不存在或表示错误，请重新输入");
     }
+
+
+
+
+
+
+
+
 
 
 }

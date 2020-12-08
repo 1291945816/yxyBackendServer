@@ -1,6 +1,7 @@
 package ink.kilig.yxy.mapper;
 
 import ink.kilig.yxy.domain.YxyUser;
+import ink.kilig.yxy.domain.YxyUserDetail;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -15,8 +16,33 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface YxyUserMapper {
-    @Select("select * from yxyUser where yxyUserName=#{username}")
+    @Select("select u.yxyUserName,u.yxyPassword  from yxyUser u where yxyUserName=#{username}")
     YxyUser getUserInfo(String username);
+
+    @Select("SELECT \n" +
+            " a.yxyUserName,\n" +
+            " a.yxyUserIntro,\n" +
+            " a.yxyNickName,\n" +
+            "	a.yxyUserAvatar,\n" +
+            "	a.yxyPassword,\n" +
+            " SUM(starNum) as starNums,\n" +
+            " SUM(c.publishVisiable) as publishSum\n" +
+            " FROM\n" +
+            "  yxyUser a,yxyUserAlbum b, yxyPicture c\n" +
+            "	WHERE\n" +
+            "	a.yxyUserName=b.yxyUserName AND b.ablumId=c.ablumId AND a.yxyUserName=#{username} ")
+    YxyUserDetail getUserDetail(String username);
+
+    @Select("SELECT \n" +
+            "COUNT(d.`comment`)\n" +
+            " FROM\n" +
+            "  yxyUser a,yxyUserAlbum b, yxyPicture c,yxyUserComment d\n" +
+            "	WHERE\n" +
+            "	a.yxyUserName=b.yxyUserName AND b.ablumId=c.ablumId AND a.yxyUserName=#{username} AND c.pictureId=d.pictureId")
+    long getCommentByUsername(String username);
+
+
+
 
     @Insert("insert into yxyUser(yxyUserName,yxyPassword,yxyNickName) value(#{yxyUserName},#{yxyPassword},#{yxyNickName})")
     boolean addYxyUser(YxyUser yxyUser);

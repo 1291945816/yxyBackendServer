@@ -2,20 +2,19 @@ package ink.kilig.yxy.service.impl;
 
 import ink.kilig.yxy.domain.*;
 import ink.kilig.yxy.mapper.YxyPictureMapper;
+import ink.kilig.yxy.po.CommentPO;
 import ink.kilig.yxy.po.PictureInfoPO;
 import ink.kilig.yxy.service.YxyPictureService;
 import ink.kilig.yxy.utils.JwtTokenUtils;
 import ink.kilig.yxy.utils.MinIOUtils;
-import net.coobird.thumbnailator.Thumbnailator;
+import ink.kilig.yxy.vo.PictureVO;
 import net.coobird.thumbnailator.Thumbnails;
-import net.coobird.thumbnailator.name.Rename;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.ibatis.binding.BindingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.bind.BindException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -113,7 +112,7 @@ public class YxyPictureServiceImpl implements YxyPictureService {
 
 
     @Override
-    public Result<List<PictureVO>> getPublishPicture(String username,Long pageNum,Long size) {
+    public Result<List<PictureVO>> getPublishPicture(String username, Long pageNum, Long size) {
         List<PictureInfoPO> pictures = yxyPictureMapper.getPulishPicture(pageNum*size, size); //获取到照片集合
         List<String> staredPicture = yxyPictureMapper.getStaredPictureByusername(username); //用户的点赞集合
         logger.info(pictures.toString());

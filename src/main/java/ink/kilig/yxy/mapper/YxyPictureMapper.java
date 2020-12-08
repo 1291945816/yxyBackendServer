@@ -1,14 +1,14 @@
 package ink.kilig.yxy.mapper;
 
 import ink.kilig.yxy.domain.CommentInfo;
-import ink.kilig.yxy.domain.CommentPO;
+import ink.kilig.yxy.domain.YxyUser;
+import ink.kilig.yxy.po.CommentPO;
 import ink.kilig.yxy.po.PictureInfoPO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 

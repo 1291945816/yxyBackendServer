@@ -3,6 +3,7 @@ package ink.kilig.yxy.service.impl;
 import ink.kilig.yxy.domain.Ablum;
 import ink.kilig.yxy.domain.PrivatePicture;
 import ink.kilig.yxy.domain.Result;
+import ink.kilig.yxy.domain.YxyUser;
 import ink.kilig.yxy.mapper.YxyUserAblumMapper;
 import ink.kilig.yxy.service.YxyUserAblumService;
 import ink.kilig.yxy.utils.JwtTokenUtils;
@@ -93,4 +94,17 @@ public class YxyUserAblumServiceImpl implements YxyUserAblumService {
         List<PrivatePicture> pictureOfAlbums = yxyUserAblumMapper.getPictureOfAlbum(username, pageNum, size);
         return Result.success(pictureOfAlbums, "获取所有图片成功");
     }
+
+    @Override
+    public Result<List<YxyUser>> getStaredInfo(String pictureId) {
+        List<YxyUser> staredDetails = yxyUserAblumMapper.getStaredDetails(pictureId);
+        return Result.success(staredDetails,"获取点赞详情成功");
+    }
+
+    @Override
+    public Result<String> changePublishStatus(boolean publish, String pictureId) {
+        yxyUserAblumMapper.updatePublish(publish,pictureId);
+        return Result.success("更新发布状态成功");
+    }
+
 }

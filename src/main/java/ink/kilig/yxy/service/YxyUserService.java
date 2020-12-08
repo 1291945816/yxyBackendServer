@@ -1,6 +1,7 @@
 package ink.kilig.yxy.service;
 
 import ink.kilig.yxy.domain.YxyUser;
+import ink.kilig.yxy.domain.YxyUserDetail;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +19,5 @@ public interface YxyUserService {
     void updateUserNickNameByusername(String nickname,String username);
     boolean changepasswordByusername(String oldPwd,String newPwd,String username);
     void updateUserIntro(String userIntro,String username);
-    YxyUser getUserInfo(String username);
-
+    YxyUserDetail getUserInfo(String username);
 }

@@ -74,5 +74,30 @@ public class AblumController {
     }
 
 
+    /**
+     * 获取图片点赞详情
+     */
+    @GetMapping("/starInfo")
+    public Result<List<YxyUser>> getStaredInfo(@RequestParam String pictureId ){
+        return yxyUserAblumService.getStaredInfo(pictureId);
+    }
+
+    /**
+     * 更新图片的发布状态
+     * @param requestData
+     * @return
+     */
+    @PostMapping("/changePublishStatus")
+    public Result<String> updatePublishStatus(@RequestBody Map<String,String> requestData){
+        String pictureId = requestData.get("pictureId");
+        boolean publish=Boolean.parseBoolean(requestData.get("publish"));
+        if (pictureId== null || pictureId.isEmpty()){
+            return Result.falure("获取失败，你输入的值不对");
+        }else {
+            return yxyUserAblumService.changePublishStatus(publish,pictureId);
+        }
+    }
+
+
 
 }

@@ -1,4 +1,4 @@
-package ink.kilig.yxy.domain;
+package ink.kilig.yxy.po;
 
 /**
  * @author: Hps
