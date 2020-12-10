@@ -13,24 +13,24 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 public class YxyApplicationTests {
 
-    @Autowired
-    YxyUserMapper yxyUserMapper;
-
-    @Autowired
-    YxyPictureMapper yxyPictureMapper;
-
-
-    @Autowired
-    YxyUserAblumMapper yxyUserAblumMapper;
-
-    @Test
-    public void testMethod(){
-        System.out.println(yxyUserAblumMapper.getStaredDetails("29"));
-    }
-
+//    @Autowired
+//    YxyUserMapper yxyUserMapper;
+//
+//    @Autowired
+//    YxyPictureMapper yxyPictureMapper;
+//
+//
+//    @Autowired
+//    YxyUserAblumMapper yxyUserAblumMapper;
+//
+//    @Test
+//    public void testMethod(){
+//        System.out.println(yxyUserAblumMapper.getStaredDetails("29"));
+//    }
+//
 
 }

@@ -90,8 +90,8 @@ public class YxyUserAblumServiceImpl implements YxyUserAblumService {
     }
 
     @Override
-    public Result<List<PrivatePicture>> getPictures(String username) {
-        List<PrivatePicture> pictureOfAlbums = yxyUserAblumMapper.getPictureOfAlbum(username);
+    public Result<List<PrivatePicture>> getPictures(String albumId) {
+        List<PrivatePicture> pictureOfAlbums = yxyUserAblumMapper.getPictureOfAlbum(albumId);
         return Result.success(pictureOfAlbums, "获取所有图片成功");
     }
 

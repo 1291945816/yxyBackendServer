@@ -55,6 +55,7 @@ public class YxyPictureServiceImpl implements YxyPictureService {
     public Result<String> uploadPicture(UploadPictureInfo uploadPictureInfo) {
         PictureInfoPO infoPO = new PictureInfoPO();
         MultipartFile file = uploadPictureInfo.getFile();
+
         infoPO.setAblumId(Long.parseLong(uploadPictureInfo.getAblumId())); //设置所位于的相册
         if(file != null){
 
@@ -222,6 +223,12 @@ public class YxyPictureServiceImpl implements YxyPictureService {
         List<CommentInfo> infos = yxyPictureMapper.getCommentInfo(pictureId);
         return Result.success(infos,"获取成功");
 
+    }
+
+    @Override
+    public Result<PictureInfoPO> getPictureDetail(String pictureId) {
+        PictureInfoPO pictureDetail = yxyPictureMapper.getPictureDetail(pictureId);
+        return Result.success(pictureDetail,"获取图片详情成功");
     }
 
 }

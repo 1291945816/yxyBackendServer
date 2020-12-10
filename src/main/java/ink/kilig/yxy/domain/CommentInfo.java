@@ -10,6 +10,15 @@ public class CommentInfo {
     private String yxyNickName; //评论人
     private String comment;//评论内容
     private String comment_time; //评论时间
+    private String yxyUserAvatar; //评论人头像
+
+    public String getYxyUserAvatar() {
+        return yxyUserAvatar;
+    }
+
+    public void setYxyUserAvatar(String yxyUserAvatar) {
+        this.yxyUserAvatar = yxyUserAvatar;
+    }
 
     @Override
     public String toString() {

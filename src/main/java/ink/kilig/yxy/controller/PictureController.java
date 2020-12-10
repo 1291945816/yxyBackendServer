@@ -1,6 +1,7 @@
 package ink.kilig.yxy.controller;
 
 import ink.kilig.yxy.domain.*;
+import ink.kilig.yxy.po.PictureInfoPO;
 import ink.kilig.yxy.service.YxyPictureService;
 import ink.kilig.yxy.utils.JwtTokenUtils;
 import ink.kilig.yxy.vo.PictureVO;
@@ -101,6 +102,11 @@ public class PictureController {
             return yxyPictureService.downloadCount(pictureId);
         }
         return Result.falure("输入的图片id不存在或表示错误，请重新输入");
+    }
+
+    @GetMapping("/info/{pictureId}")
+    public Result<PictureInfoPO> getPictureDetail(@PathVariable String pictureId){
+        return yxyPictureService.getPictureDetail(pictureId);
     }
 
 

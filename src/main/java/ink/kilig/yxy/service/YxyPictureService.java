@@ -2,6 +2,7 @@ package ink.kilig.yxy.service;
 
 import ink.kilig.yxy.domain.CommentInfo;
 import ink.kilig.yxy.domain.YxyUser;
+import ink.kilig.yxy.po.PictureInfoPO;
 import ink.kilig.yxy.vo.PictureVO;
 import ink.kilig.yxy.domain.UploadPictureInfo;
 import ink.kilig.yxy.domain.Result;
@@ -24,6 +25,7 @@ public interface YxyPictureService {
     Result<String> downloadCount(String pictureId);
     Result<String> commentPicture(String pictureId,String comment,String username);
     Result<List<CommentInfo>> getComments(String pictureId);
+    Result<PictureInfoPO> getPictureDetail(String pictureId);
 
 
 }

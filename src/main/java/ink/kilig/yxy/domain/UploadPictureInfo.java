@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class UploadPictureInfo implements Serializable {
     private boolean publishVisiable; //是否公布到广场
     private String pictureInfo; //照片的相关信息
-    private String ablumId; //相c册Id
+    private String ablumId; //相册Id
     private String pictureName; //照片名字
     private MultipartFile file; //文件信息
 

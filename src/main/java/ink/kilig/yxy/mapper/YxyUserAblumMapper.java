@@ -45,9 +45,12 @@ public interface YxyUserAblumMapper {
             "c.publishVisiable as publish,\n" +
             "c.thumbnailPath as thumbnailUrl,\n" +
             "c.picturePath as imgUrl\n" +
-            "FROM yxyUser a,yxyUserAlbum b,yxyPicture c\n" +
-            "WHERE a.yxyUserName=#{username} AND a.yxyUserName=b.yxyUserName AND c.ablumId=b.ablumId ORDER BY c.pictureCreateTime DESC ")
-    List<PrivatePicture> getPictureOfAlbum(String username);
+            "FROM yxyPicture c\n" +
+            "WHERE  c.ablumId=#{ablumId} ORDER BY c.pictureCreateTime DESC ")
+    List<PrivatePicture> getPictureOfAlbum(String ablumId);
+
+
+
 
 
 

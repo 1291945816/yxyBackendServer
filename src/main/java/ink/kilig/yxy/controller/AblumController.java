@@ -59,10 +59,9 @@ public class AblumController {
     public Result<List<Ablum>> info(HttpServletRequest request){
         return yxyUserAblumService.getAblumInfo(request);
     }
-
-    @GetMapping("pictures")
-    public Result<List<PrivatePicture>> pictures(@CurrentUser String username){
-            return yxyUserAblumService.getPictures(username);
+    @GetMapping("pictures/{ablumId}")
+    public Result<List<PrivatePicture>> pictures(@PathVariable String ablumId){
+            return yxyUserAblumService.getPictures(ablumId);
     }
 
 

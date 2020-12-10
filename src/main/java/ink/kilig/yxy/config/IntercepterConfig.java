@@ -46,7 +46,7 @@ public class IntercepterConfig implements WebMvcConfigurer {
     public MultipartConfigElement multipartConfigElement() {
 
         MultipartConfigFactory factory = new MultipartConfigFactory();
-        factory.setLocation("D:/data/tmp");
+        factory.setLocation("/data/tmp");
         return factory.createMultipartConfig();
     }
 

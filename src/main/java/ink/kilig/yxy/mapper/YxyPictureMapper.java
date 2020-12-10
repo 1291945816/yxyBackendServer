@@ -48,6 +48,7 @@ public interface YxyPictureMapper {
             "	yxyUser.yxyUserName = yxyUserAlbum.yxyUserName \n" +
             "	AND yxyUserAlbum.ablumId = yxyPicture.ablumId \n" +
             "	AND yxyPicture.publishVisiable = TRUE\n"+
+            "order by yxyPicture.pictureCreateTime desc"+
             "   LIMIT #{pageNum},#{size}")
     List<PictureInfoPO> getPulishPicture(Long pageNum,Long size);
 
@@ -86,6 +87,7 @@ public interface YxyPictureMapper {
             "SELECT\n" +
                     "	yxyUser.yxyUserName,\n" +
                     "	yxyUser.yxyNickName,\n" +
+                    "yxyUser.yxyUserAvatar,\n"+
                     "	yxyUserComment.`comment`,\n" +
                     "	yxyUserComment.comment_time \n" +
                     "FROM\n" +
@@ -95,5 +97,21 @@ public interface YxyPictureMapper {
                     "	yxyUserComment.pictureId=#{pictureId}"
     )
     List<CommentInfo> getCommentInfo(String pictureId);
+
+    @Select("SELECT\n" +
+            "pictureInfo,\n" +
+            "a.pictureName,\n" +
+            "a.starNum,\n" +
+            "a.pictureCreateTime,\n" +
+            "a.downloadSum,\n" +
+            "b.yxyUserName,\n" +
+            "b.yxyNickName,\n" +
+            "b.yxyUserAvatar\n" +
+            "FROM yxyPicture a,yxyUser b,yxyUserAlbum c\n" +
+            "WHERE\n" +
+            "a.pictureId=#{pictureId} AND a.ablumId=c.ablumId AND b.yxyUserName =c.yxyUserName")
+    PictureInfoPO getPictureDetail(String pictureId);
+
+
 
 }

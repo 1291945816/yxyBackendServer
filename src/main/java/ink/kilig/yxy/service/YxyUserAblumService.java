@@ -19,7 +19,7 @@ public interface YxyUserAblumService {
     Result<String> deleteAblum(Map<String,String> map);
     Result<String> changeAblumName(Map<String,String> map);
     Result<List<Ablum>> getAblumInfo(HttpServletRequest request);
-    Result<List<PrivatePicture>> getPictures(String username);
+    Result<List<PrivatePicture>> getPictures(String ablumId);
     Result<List<YxyUser>> getStaredInfo(String pictureId);
     Result<String> changePublishStatus(boolean publish,String pictureId);
 
